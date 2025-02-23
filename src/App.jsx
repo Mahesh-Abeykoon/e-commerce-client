@@ -11,28 +11,6 @@ import ProtectedRoute from './components/protected-routes';
 
 const queryClient = new QueryClient();
 
-// function App() {
-//   return (
-//     <QueryClientProvider client={queryClient}>
-//       <AuthProvider>
-//         <Router>
-//           <Routes>
-//             <Route path="/" element={<Navigate to="/login" />} />
-//             <Route path="/login" element={<LoginPage />} />
-//             <Route path="/signup" element={<SignUpPage />} />
-//             <Route path="/home" element={<HomePage />} />
-//             <Route path="/profile" element={<ProfilePage />} />
-//             <Route path="/admin" element={<AdminPage />} />
-//             <Route path="/seller" element={<SellerPage />} />
-//             <Route path="/cart" element={<CartPage />} />
-//           </Routes>
-//         </Router>
-//       </AuthProvider>
-//     </QueryClientProvider>
-//   );
-// }
-
-// export default App;
 function App() {
   return (
     <QueryClientProvider client={queryClient}>
@@ -47,13 +25,18 @@ function App() {
             <Route element={<ProtectedRoute roles={['customer', 'seller', 'admin']} />}>
               <Route path="/home" element={<HomePage />} />
               <Route path="/profile" element={<ProfilePage />} />
-              <Route path="/cart" element={<CartPage />} />
             </Route>
 
             {/* Seller-Only Routes */}
             <Route element={<ProtectedRoute roles={['seller', 'admin']} />}>
               <Route path="/seller" element={<SellerPage />} />
             </Route>
+
+             {/* Customer-Only Routes */}
+            <Route element={<ProtectedRoute roles={['customer']} />}>
+              <Route path="/cart" element={<CartPage />} />
+            </Route>
+
           </Routes>
         </Router>
       </AuthProvider>
