@@ -1,5 +1,5 @@
 import { createContext, useState, useContext, useEffect } from 'react';
-import { fetchLogin, fetchLogout, fetchUserProfile } from '../api/login';
+import { fetchLogin, fetchLogout, fetchUserProfile } from '../api/auth';
 import PropTypes from 'prop-types'; 
 
 const AuthContext = createContext();
