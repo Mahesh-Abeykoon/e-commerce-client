@@ -1,5 +1,7 @@
 import { useCart, useClearCart } from '../hooks/use-cart';
 import Cart from '../components/cart';
+import Loading from '../components/loading'
+import Error from '../components/error'
 
 const CartPage = () => {
   const { data: cart, isLoading, error } = useCart();
@@ -9,9 +11,8 @@ const CartPage = () => {
     clearCartMutation.mutate();
   };
 
-  if (isLoading) return <div>Loading...</div>;
-  if (error) return <div>Error: {error.message}</div>;
-
+  if (isLoading) return <Loading />;
+  if (error) return <Error />;
   return (
     <div>
       <h1>Cart</h1>

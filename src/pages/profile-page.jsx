@@ -1,10 +1,12 @@
 import { useUserProfile } from '../hooks/use-auth';
+import Loading from '../components/loading'
+import Error from '../components/error';
 
 const ProfilePage = () => {
   const { data: user, isLoading, error } = useUserProfile();
 
-  if (isLoading) return <div>Loading...</div>;
-  if (error) return <div>Error: {error.message}</div>;
+  if (isLoading) return <Loading />;
+  if (error) return <Error />;
 
   return (
     <div>
