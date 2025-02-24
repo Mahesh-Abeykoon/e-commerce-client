@@ -1,29 +1,6 @@
-// import React, { useState } from 'react';
-// import { useLogin } from '../hooks/use-login';
-
-// const LoginComponent = () => {
-//   const [email, setEmail] = useState('');
-//   const [password, setPassword] = useState('');
-//   const { mutate: login, isLoading } = useLogin();
-
-//   const handleSubmit = (e) => {
-//     e.preventDefault();
-//     login({ email, password });
-//   };
-
-//   return (
-//     <form onSubmit={handleSubmit}>
-//       <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} required />
-//       <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} required />
-//       <button type="submit" disabled={isLoading}>Login</button>
-//     </form>
-//   );
-// };
-
-// export default LoginComponent;
 
 import { useState } from 'react';
-import { useLogin } from '../hooks/use-login';
+import { useLogin } from '../../hooks/use-login';
 import { useNavigate } from "react-router-dom";
 
 const LoginPage = () => {

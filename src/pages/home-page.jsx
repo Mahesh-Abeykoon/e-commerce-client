@@ -2,14 +2,15 @@ import { useItems } from '../hooks/use-items';
 import { useAuth } from '../contexts/auth.context';
 import ItemList from '../components/item-list';
 import Navbar from '../components/navbar';
+import Loading from '../components/loading'
+import Error from '../components/error'
 
 const HomePage = () => {
   const { user } = useAuth();
   const { data: items, isLoading, error } = useItems(); 
 
-  if (isLoading) return <div>Loading items...</div>;
-
-  if (error) return <div>Error loading items: {error.message}</div>;
+  if (isLoading) return <Loading />;
+  if (error) return <Error />;
 
   return (
     <div>

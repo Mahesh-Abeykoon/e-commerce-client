@@ -1,6 +1,8 @@
 import { useState } from 'react';
 import { useItems, useCreateItem, useUpdateItem, useDeleteItem } from '../hooks/use-items';
 import ItemForm from '../components/item-form';
+import Loading from '../components/loading'
+import Error from '../components/error';
 
 const SellerPage = () => {
   const { data: items, isLoading, isError } = useItems();
@@ -43,8 +45,8 @@ const SellerPage = () => {
         isLoading={isLoading} 
       />
 
-      {isLoading && <p>Loading items...</p>}
-      {isError && <p>Error loading items.</p>}
+      {isLoading && <Loading />}
+      {isError &&  <Error />}
 
       <ul>
         {items?.map((item) => (

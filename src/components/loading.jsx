@@ -1,5 +1,5 @@
 
-const LoadingPage = () => {
+const Loading = () => {
   return (
     <div>
       <h1>Loading...</h1>
@@ -7,4 +7,4 @@ const LoadingPage = () => {
   )
 }
 
-export default LoadingPage
+export default Loading
