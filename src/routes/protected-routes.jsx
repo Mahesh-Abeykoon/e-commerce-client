@@ -1,5 +1,6 @@
 import { Navigate, Outlet } from 'react-router-dom';
 import { useAuth } from '../contexts/auth.context';
+import Loading from '../components/loading'
 import PropTypes from 'prop-types';
 
 const ProtectedRoute = ({ roles, children }) => {
@@ -13,7 +14,7 @@ const ProtectedRoute = ({ roles, children }) => {
 
   // If user is not loaded yet, show loading state
   if (!user) {
-    return <div>Loading...</div>;
+    return <Loading />;
   }
 
   // If user role is not allowed, redirect to home
