@@ -7,7 +7,7 @@ import SignUpPage from './pages/auth/sign-up-page';
 import ProfilePage from './pages/profile-page';
 import SellerPage from './pages/seller-page';
 import CartPage from './pages/cart-page';
-import ProtectedRoute from './components/protected-routes';
+import ProtectedRoute from './routes/protected-routes';
 
 const queryClient = new QueryClient();
 
