@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
-import { useAuth } from '@/contexts/auth.context';
-import { LoadingPage } from '../pages/loading-page';
+import { useAuth } from '../contexts/auth.context';
+import { LoadingPage } from '../components/loading';
 
 /**
  * Custom hook for handling authenticated queries with token refreshing.
