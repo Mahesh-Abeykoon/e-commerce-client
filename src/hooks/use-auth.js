@@ -1,52 +1,60 @@
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { fetchLogin, fetchLogout, fetchUserProfile } from "../api/auth";
-import { useNavigate } from "react-router-dom";
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { login, logout, fetchUserProfile } from '../api/auth';
+import { handleError } from '../utils/error-handler';
+import { useNavigate } from 'react-router-dom';
 
-// Login Hook
+/**
+ * Log in a user.
+ */
 export const useLogin = () => {
   const queryClient = useQueryClient();
   const navigate = useNavigate();
 
   return useMutation({
-    mutationKey: ["login"],
-    mutationFn: fetchLogin,
+    mutationKey: ['login'],
+    mutationFn: login,
     onSuccess: (data) => {
       if (data?.token) {
-        localStorage.setItem("authToken", data.token);
-        queryClient.invalidateQueries(["user"]);
-        navigate("/home");
+        localStorage.setItem('authToken', data.token);
+        queryClient.invalidateQueries(['user']);
+        navigate('/home');
       }
     },
     onError: (error) => {
-      console.error("Login error:", error.message);
+      handleError(error, 'Login error:');
     },
   });
 };
 
-// Logout Hook
+/**
+ * Log out a user.
+ */
 export const useLogout = () => {
   const queryClient = useQueryClient();
   const navigate = useNavigate();
 
   return useMutation({
-    mutationKey: ["logout"],
-    mutationFn: fetchLogout,
+    mutationKey: ['logout'],
+    mutationFn: logout,
     onSuccess: () => {
-      localStorage.removeItem("authToken");
+      localStorage.removeItem('authToken');
       queryClient.clear();
-      navigate("/login");
+      navigate('/login');
     },
     onError: (error) => {
-      console.error("Logout error:", error.message);
+      handleError(error, 'Logout error:');
     },
   });
 };
 
-// Fetch User Profile Hook
+/**
+ * Fetch the user's profile.
+ */
 export const useUserProfile = () => {
   return useQuery({
-    queryKey: ["user"],
+    queryKey: ['user'],
     queryFn: fetchUserProfile,
-    staleTime: 5 * 60 * 1000,
+    staleTime: 5 * 60 * 1000, // Data is fresh for 5 minutes
+    refetchOnWindowFocus: false, // Disable refetching on window focus
   });
 };
