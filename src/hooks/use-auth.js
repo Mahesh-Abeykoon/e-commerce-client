@@ -1,5 +1,5 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import { login, logout, fetchUserProfile } from '../api/auth';
+import { fetchLogin, fetchLogout, fetchUserProfile } from '../api/auth';
 import { handleError } from '../utils/error-handler';
 import { useNavigate } from 'react-router-dom';
 
@@ -12,7 +12,7 @@ export const useLogin = () => {
 
   return useMutation({
     mutationKey: ['login'],
-    mutationFn: login,
+    mutationFn: fetchLogin,
     onSuccess: (data) => {
       if (data?.token) {
         localStorage.setItem('authToken', data.token);
@@ -35,7 +35,7 @@ export const useLogout = () => {
 
   return useMutation({
     mutationKey: ['logout'],
-    mutationFn: logout,
+    mutationFn: fetchLogout,
     onSuccess: () => {
       localStorage.removeItem('authToken');
       queryClient.clear();
