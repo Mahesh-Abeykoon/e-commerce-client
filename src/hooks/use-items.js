@@ -1,77 +1,86 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import fetchWithAuthorization from '../api/fetch-with-authorization';
-import { END_POINTS } from '../api/end-points';
+import {
+  getAllItems,
+  getItemById,
+  createNewItem,
+  updateExistingItem,
+  deleteItemById,
+} from '../api/item';
+import { handleError } from '../utils/error-handler';
 
-// Fetch All Items
+/**
+ * Fetch all items.
+ */
 export const useItems = () => {
   return useQuery({
     queryKey: ['items'],
-    queryFn: () => fetchWithAuthorization({ path: END_POINTS.ITEMS.GET_ALL }),
+    queryFn: getAllItems,
+    staleTime: 5 * 60 * 1000, // Data is fresh for 5 minutes
+    refetchOnWindowFocus: false, // Disable refetching on window focus
   });
 };
 
-// Fetch Item by ID
-export const useItemById = (id) => {
+/**
+ * Fetch an item by its ID.
+ * @param {Object} params - Parameters for the hook.
+ * @param {string} params.id - The ID of the item to fetch.
+ */
+export const useItemById = ({ id }) => {
   return useQuery({
     queryKey: ['item', id],
-    queryFn: () => fetchWithAuthorization({ path: END_POINTS.ITEMS.GET_BY_ID.replace(':id', id) }),
+    queryFn: () => getItemById({ id }),
     enabled: !!id, // Only fetch if ID is available
   });
 };
 
-// Create New Item
+/**
+ * Create a new item.
+ */
 export const useCreateItem = () => {
   const queryClient = useQueryClient();
-  
+
   return useMutation({
-    mutationFn: (itemData) => fetchWithAuthorization({
-      path: END_POINTS.ITEMS.CREATE,
-      method: 'POST',
-      body: itemData,
-    }),
+    mutationFn: createNewItem,
     onSuccess: () => {
-      queryClient.invalidateQueries(['items']); // Refresh item list after creation
+      queryClient.invalidateQueries(['items']); // Refresh the item list
     },
     onError: (error) => {
-      console.error('Error creating item:', error.message);
+      handleError(error, 'Error creating item:');
     },
   });
 };
 
-// Update Item by ID
+/**
+ * Update an existing item.
+ */
 export const useUpdateItem = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: ({ id, itemData }) => fetchWithAuthorization({
-      path: END_POINTS.ITEMS.UPDATE.replace(':id', id),
-      method: 'PUT',
-      body: itemData,
-    }),
+    mutationFn: updateExistingItem,
     onSuccess: (_, variables) => {
-      queryClient.invalidateQueries(['items']);
+      queryClient.invalidateQueries(['items']); // Refresh the item list
       queryClient.invalidateQueries(['item', variables.id]); // Refresh specific item data
     },
     onError: (error) => {
-      console.error('Error updating item:', error.message);
+      handleError(error, 'Error updating item:');
     },
   });
 };
 
-// Delete Item by ID
+/**
+ * Delete an item by its ID.
+ */
 export const useDeleteItem = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: (id) => fetchWithAuthorization({
-      path: END_POINTS.ITEMS.DELETE.replace(':id', id),
-      method: 'DELETE',
-    }),
+    mutationFn: deleteItemById,
     onSuccess: () => {
-      queryClient.invalidateQueries(['items']);
+      queryClient.invalidateQueries(['items']); // Refresh the item list
     },
     onError: (error) => {
-      console.error('Error deleting item:', error.message);
+      handleError(error, 'Error deleting item:');
     },
   });
 };
