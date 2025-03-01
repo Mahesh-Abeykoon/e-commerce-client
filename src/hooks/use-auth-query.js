@@ -1,27 +1,33 @@
-import { useAuth } from '@/contexts/auth.context'
-import { useEffect, useState } from 'react'
-import { useQuery } from '@tanstack/react-query'
-import { LoadingPage } from '../pages/loading-page'
+import { useEffect, useState } from 'react';
+import { useQuery } from '@tanstack/react-query';
+import { useAuth } from '../contexts/auth.context';
+import { LoadingPage } from '../components/loading';
 
-export const useAuthQuery = query => {
-  const { refreshUserSession, isTokenRefreshing, setIsTokenRefreshing } = useAuth()
+/**
+ * Custom hook for handling authenticated queries with token refreshing.
+ * @param {Object} query - The query configuration object.
+ * @returns {Object|React.Component} The query result or a loading component.
+ */
+export const useAuthQuery = (query) => {
+  const { refreshUserSession, isTokenRefreshing, setIsTokenRefreshing } = useAuth();
+  const [loading, setLoading] = useState(false);
 
   const res = useQuery({
     ...query,
-    enabled: !isTokenRefreshing, // Enable query if not refreshing but should-refetching
-  })
-
-  const [loading, setLoading] = useState(false) // Add a new state variable to track loading
+    enabled: !isTokenRefreshing, // Enable query only if not refreshing
+  });
 
   useEffect(() => {
     if (res.data?.statusCode === 401) {
       const refreshAndRefetch = async () => {
+        setIsTokenRefreshing(true);
         await refreshUserSession() // Trigger session refresh
         res.refetch() // Refetch the query after refreshing
+        setIsTokenRefreshing(false)
       }
-      setIsTokenRefreshing(true)
       refreshAndRefetch()
     }
+
     if (res.isFetching) {
       setLoading(true)
     } else {
@@ -32,7 +38,6 @@ export const useAuthQuery = query => {
   if (loading) {
     return <LoadingPage />
   }
-
 
   return res
 }

@@ -1,73 +1,89 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import  fetchWithAuthorization  from '../api/fetch-with-authorization';
-import { END_POINTS } from '../api/end-points';
+import {
+  getCart,
+  addItemToCart,
+  updateCartItemQuantity,
+  removeCartItem,
+  clearCart,
+} from '../api/cart';
+import { handleError } from '../utils/error-handler';
 
-// Get cart
+/**
+ * Fetch all items in the cart.
+ */
 export const useCart = () => {
   return useQuery({
     queryKey: ['cart'],
-    queryFn: () => fetchWithAuthorization({ path: END_POINTS.CART.GET }),
+    queryFn: getCart,
+    staleTime: 5 * 60 * 1000, // Data is fresh for 5 minutes
+    refetchOnWindowFocus: false, // Disable refetching on window focus
   });
 };
 
-// Add item to cart
+/**
+ * Add an item to the cart.
+ */
 export const useAddItemToCart = () => {
   const queryClient = useQueryClient();
+
   return useMutation({
-    mutationFn: ({ productId, quantity }) =>
-      fetchWithAuthorization({
-        path: END_POINTS.CART.ADD,
-        method: 'POST',
-        body: { productId, quantity },
-      }),
+    mutationFn: addItemToCart,
     onSuccess: () => {
-      queryClient.invalidateQueries(['cart']);
+      queryClient.invalidateQueries(['cart']); // Refresh the cart data
+    },
+    onError: (error) => {
+      handleError(error, 'Error adding item to cart:');
     },
   });
 };
 
-// Update item quantity in cart
-export const useUpdateItemQuantity = () => {
+/**
+ * Update the quantity of an item in the cart.
+ */
+export const useUpdateCartItemQuantity = () => {
   const queryClient = useQueryClient();
+
   return useMutation({
-    mutationFn: ({ productId, quantity }) =>
-      fetchWithAuthorization({
-        path: END_POINTS.CART.UPDATE,
-        method: 'PUT',
-        body: { productId, quantity },
-      }),
+    mutationFn: updateCartItemQuantity,
     onSuccess: () => {
-      queryClient.invalidateQueries(['cart']);
+      queryClient.invalidateQueries(['cart']); // Refresh the cart data
+    },
+    onError: (error) => {
+      handleError(error, 'Error updating cart item quantity:');
     },
   });
 };
 
-// Remove item from cart
-export const useRemoveItemFromCart = () => {
+/**
+ * Remove an item from the cart.
+ */
+export const useRemoveCartItem = () => {
   const queryClient = useQueryClient();
+
   return useMutation({
-    mutationFn: (productId) =>
-      fetchWithAuthorization({
-        path: END_POINTS.CART.REMOVE.replace(':productId', productId),
-        method: 'DELETE',
-      }),
+    mutationFn: removeCartItem,
     onSuccess: () => {
-      queryClient.invalidateQueries(['cart']);
+      queryClient.invalidateQueries(['cart']); // Refresh the cart data
+    },
+    onError: (error) => {
+      handleError(error, 'Error removing item from cart:');
     },
   });
 };
 
-// Clear cart
+/**
+ * Clear all items from the cart.
+ */
 export const useClearCart = () => {
   const queryClient = useQueryClient();
+
   return useMutation({
-    mutationFn: () =>
-      fetchWithAuthorization({
-        path: END_POINTS.CART.CLEAR,
-        method: 'DELETE',
-      }),
+    mutationFn: clearCart,
     onSuccess: () => {
-      queryClient.invalidateQueries(['cart']);
+      queryClient.invalidateQueries(['cart']); // Refresh the cart data
+    },
+    onError: (error) => {
+      handleError(error, 'Error clearing cart:');
     },
   });
 };
