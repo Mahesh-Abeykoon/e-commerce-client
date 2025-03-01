@@ -7,7 +7,7 @@ import { END_POINTS } from './end-points';
  * @param {Object} params.loginData - The login credentials (e.g., email and password).
  * @returns {Promise<Object>} A promise that resolves to the login response.
  */
-export const login = async ({ loginData }) => {
+export const fetchLogin = async ({ loginData }) => {
   return fetchWithAuthorization({
     path: END_POINTS.AUTH.SIGN_IN,
     method: 'POST',
@@ -19,7 +19,7 @@ export const login = async ({ loginData }) => {
  * Logs out a user.
  * @returns {Promise<Object>} A promise that resolves to the logout response.
  */
-export const logout = async () => {
+export const fetchLogout = async () => {
   return fetchWithAuthorization({
     path: END_POINTS.AUTH.LOGOUT,
     method: 'POST',
