@@ -1,9 +1,9 @@
 import PropTypes from 'prop-types';
-import { useUpdateItemQuantity, useRemoveItemFromCart } from '../hooks/use-cart';
+import { useUpdateCartItemQuantity, useRemoveCartItem } from '../hooks/use-cart';
 
 const Cart = ({ cart }) => {
-  const updateItemQuantityMutation = useUpdateItemQuantity();
-  const removeItemFromCartMutation = useRemoveItemFromCart();
+  const updateItemQuantityMutation = useUpdateCartItemQuantity();
+  const removeItemFromCartMutation = useRemoveCartItem();
 
   const handleUpdateQuantity = (productId, quantity) => {
     updateItemQuantityMutation.mutate({ productId, quantity });

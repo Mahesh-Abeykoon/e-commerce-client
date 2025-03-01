@@ -1,30 +1,38 @@
 import fetchWithAuthorization from './fetch-with-authorization';
 import { END_POINTS } from './end-points';
 
-// Login API call
-export const fetchLogin = async (loginData) => {
-  const response = await fetchWithAuthorization({
+/**
+ * Logs in a user.
+ * @param {Object} params - Parameters for the request.
+ * @param {Object} params.loginData - The login credentials (e.g., email and password).
+ * @returns {Promise<Object>} A promise that resolves to the login response.
+ */
+export const fetchLogin = async ({ loginData }) => {
+  return fetchWithAuthorization({
     path: END_POINTS.AUTH.SIGN_IN,
     method: 'POST',
     body: loginData,
   });
-  return response;
 };
 
-// Logout API call
+/**
+ * Logs out a user.
+ * @returns {Promise<Object>} A promise that resolves to the logout response.
+ */
 export const fetchLogout = async () => {
-  const response = await fetchWithAuthorization({
+  return fetchWithAuthorization({
     path: END_POINTS.AUTH.LOGOUT,
     method: 'POST',
   });
-  return response;
 };
 
-// Fetch user profile API call
+/**
+ * Fetches the user's profile.
+ * @returns {Promise<Object>} A promise that resolves to the user profile data.
+ */
 export const fetchUserProfile = async () => {
-  const response = await fetchWithAuthorization({
+  return fetchWithAuthorization({
     path: END_POINTS.AUTH.PROFILE,
     method: 'GET',
   });
-  return response;
 };
