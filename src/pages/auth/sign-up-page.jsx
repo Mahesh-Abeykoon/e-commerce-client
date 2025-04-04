@@ -33,11 +33,12 @@ const SignUpPage = () => {
 
   return (
     <div className="flex min-h-screen items-center justify-center bg-gray-100 px-4">
-      <div className="w-full max-w-md rounded-lg bg-white p-6 shadow-md">
-        <h2 className="mb-6 text-center text-2xl font-semibold text-gray-800">
+      <div className="w-full max-w-md rounded-lg bg-white p-8 shadow-md">
+        <h2 className="mb-6 text-center text-2xl font-bold text-gray-800">
           Sign Up
         </h2>
         <form onSubmit={handleSubmit} className="space-y-4">
+          {/* Name Input */}
           <div>
             <label className="mb-1 block text-sm font-medium text-gray-700">
               Name
@@ -51,6 +52,8 @@ const SignUpPage = () => {
               className="w-full rounded-md border border-gray-300 p-2 text-gray-700 focus:border-blue-500 focus:ring focus:ring-blue-300"
             />
           </div>
+
+          {/* Email Input */}
           <div>
             <label className="mb-1 block text-sm font-medium text-gray-700">
               Email
@@ -64,6 +67,8 @@ const SignUpPage = () => {
               className="w-full rounded-md border border-gray-300 p-2 text-gray-700 focus:border-blue-500 focus:ring focus:ring-blue-300"
             />
           </div>
+
+          {/* Password Input */}
           <div>
             <label className="mb-1 block text-sm font-medium text-gray-700">
               Password
@@ -77,6 +82,8 @@ const SignUpPage = () => {
               className="w-full rounded-md border border-gray-300 p-2 text-gray-700 focus:border-blue-500 focus:ring focus:ring-blue-300"
             />
           </div>
+
+          {/* Role Selection */}
           <div>
             <label className="mb-1 block text-sm font-medium text-gray-700">
               Role
@@ -91,10 +98,12 @@ const SignUpPage = () => {
               <option value="admin">Admin</option>
             </select>
           </div>
+
+          {/* Submit Button */}
           <button
             type="submit"
             disabled={isLoading}
-            className="w-full rounded-md bg-blue-600 px-4 py-2 text-white transition-all hover:bg-blue-700 disabled:cursor-not-allowed disabled:bg-blue-400"
+            className="w-full rounded-md bg-green-600 px-4 py-2 text-white transition-all hover:bg-green-700 disabled:cursor-not-allowed disabled:bg-green-400"
           >
             {isLoading ? "Signing up..." : "Sign Up"}
           </button>
